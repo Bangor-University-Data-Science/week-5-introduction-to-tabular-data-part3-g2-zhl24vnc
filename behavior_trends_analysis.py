@@ -8,8 +8,10 @@ def import_data(filename: str) -> pd.DataFrame:
     else:
         raise ValueError("Unsupported file format.")
 
-def filter_data(df: pd.DataFrame) -> pd.DataFrame:
-    return df.dropna(subset=['CustomerID'])[(df['Quantity'] > 0) & (df['UnitPrice'] > 0)]
+def filter_data(df: pd.DataFrame):
+    df = df.dropna(subset=['CustomerID'])
+    df = df[(df['Quantity'] > 0) & (df['UnitPrice'] > 0)]
+    return df
 
 def loyalty_customers(df: pd.DataFrame, min_purchases: int) -> pd.DataFrame:
     return df[df['CustomerID'].isin(df.groupby('CustomerID').size()[lambda x: x >= min_purchases].index)]
